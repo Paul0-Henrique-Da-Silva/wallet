@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import emailAction from '../actions';
 
 class Login extends React.Component {
   state = {
@@ -12,6 +15,18 @@ inputState = ({ target }) => {
   this.setState({
     [name]: value,
   }, () => this.isDisableCondition());
+}
+
+setRedux = () => {
+  const { email } = this.state;
+  const { dispatch } = this.props;
+  dispatch(emailAction({ email }));
+  this.setRedirectPage();
+}
+
+setRedirectPage = () => {
+  const { history } = this.props;
+  history.push('carteira');
 }
 
 isDisableCondition = () => {
@@ -31,6 +46,7 @@ isDisableCondition = () => {
 
 render() {
   const { email, password, buttonEvent } = this.state;
+  console.log(this.props);
   return (
     <div>
       <h3>Login</h3>
@@ -59,6 +75,7 @@ render() {
         <button
           type="button"
           disabled={ buttonEvent }
+          onClick={ this.setRedux }
         >
           Entrar
         </button>
@@ -67,4 +84,8 @@ render() {
 }
 }
 
-export default Login;
+Login.propTypes = {
+  dispatch: PropTypes.func,
+}.isRequired;
+
+export default connect()(Login);
