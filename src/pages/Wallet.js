@@ -5,14 +5,13 @@ import { connect } from 'react-redux';
 class Wallet extends React.Component {
   render() {
     const { email } = this.props;
-    const valor = 0;
     return (
       <header>
         <h2>Wallet</h2>
         <h4 data-testid="email-field">{ email }</h4>
         <h4 data-testid="total-field">
           total:
-          { valor }
+          { 0 }
         </h4>
         <h5 data-testid="header-currency-field">BRL</h5>
       </header>
