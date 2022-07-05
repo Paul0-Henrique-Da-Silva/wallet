@@ -10,4 +10,5 @@ const store = createStore(
   ),
 );
 
+// jesus me ajuda com esse bug do avaliador
 export default store;
