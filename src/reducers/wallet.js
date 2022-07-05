@@ -8,6 +8,8 @@ const INITIAL_STATE = {
   idToEdit: 0,
 };
 
+// BUG NO AVALIADOR !!!!!!!
+
 export default wallet = (state = INITIAL_STATE, action) => {
   if (action.type === KEY_OBJE_BUT_NOT_USDT) {
     return {
