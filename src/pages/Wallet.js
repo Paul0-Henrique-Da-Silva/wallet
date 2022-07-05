@@ -5,7 +5,7 @@ import asyncawesomeaapi from '../api/awesomeapi';
 import valueCurriesButNotUSDT from '../actions';
 
 class Wallet extends React.Component {
-  componentDidMount = () => {
+  componentDidMount = async () => {
     const { dispatch } = this.props;
     dispatch(valueCurriesButNotUSDT(asyncawesomeaapi()));
   };
@@ -15,7 +15,7 @@ class Wallet extends React.Component {
     return (
       <header>
         <h2>Wallet</h2>
-        <h4 data-testid="email-field">{email}</h4>
+        <h4 data-testid="email-field">{ email }</h4>
         <h4 data-testid="total-field">
           total:
           { 0 }
