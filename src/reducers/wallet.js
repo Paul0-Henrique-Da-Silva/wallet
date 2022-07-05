@@ -10,7 +10,7 @@ const INITIAL_STATE = {
 
 // BUG NO AVALIADOR !!!!!!!
 
-export default wallet = (state = INITIAL_STATE, action) => {
+const wallet = (state = INITIAL_STATE, action) => {
   if (action.type === KEY_OBJE_BUT_NOT_USDT) {
     return {
       ...state,
@@ -19,3 +19,4 @@ export default wallet = (state = INITIAL_STATE, action) => {
   }
   return state;
 };
+export default wallet;

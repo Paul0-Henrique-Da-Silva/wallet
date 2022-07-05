@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import asyncawesomeaapi from '../api/awesomeapi';
-import valueCurriesButNotUSDT from '../actions';
+import { valueCurriesButNotUSDT } from '../actions';
 
 class Wallet extends React.Component {
   componentDidMount = async () => {
