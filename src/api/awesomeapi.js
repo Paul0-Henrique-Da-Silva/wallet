@@ -5,3 +5,5 @@ export default async function asyncawesomeaapi() {
     .filter((currencies) => currencies !== 'USDT');
   return KeyObjeButNotUSDT;
 }
+
+// commit para ver se resolve bug do avaliador
