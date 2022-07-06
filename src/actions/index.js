@@ -16,3 +16,13 @@ export function valueCurriesButNotUSDT(data) {
     data,
   };
 }
+
+export default function asyncawesomeapi() {
+  return async (dispatch) => {
+    const request = await fetch('https://economia.awesomeapi.com.br/json/all');
+    const response = await request.json();
+    const KeyObjeButNotUSDT = Object.keys(response)
+      .filter((currencies) => currencies !== 'USDT');
+    dispatch(valueCurriesButNotUSDT(KeyObjeButNotUSDT));
+  };
+}
