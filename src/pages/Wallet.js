@@ -55,21 +55,23 @@ inputChangeAll = ({ target }) => {
               {currencies.map((currencie) => (
                 <option key={ currencie } value={ currencie }>{ currencie }</option>
               ))}
-              <input name="description" data-testid="description-input" />
-              <label htmlFor="method">
+            </select>
+          </label>
+          {/* <input name="description" data-testid="description-input" /> */}
+          {/* <label htmlFor="method">
                 Método de Pagamento:
                 <select
                   name="method"
                   id="method"
                   data-testid="method-input"
-                >
-                  <option value="Dinheiro">Dinheiro</option>
+                > */}
+          {/* <option value="Dinheiro">Dinheiro</option>
                   <option value="Cartão de débito">Cartão de débito</option>
-                  <option value="Cartão de crédito">Cartão de crédito</option>
-                </select>
-              </label>
-            </select>
-          </label>
+                  <option value="Cartão de crédito">Cartão de crédito</option> */}
+          {/* </select> */}
+          {/* </label> */}
+          {/* </select> */}
+          {/* </label> */}
         </section>
       </>
     );
