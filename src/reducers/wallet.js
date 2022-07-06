@@ -14,7 +14,7 @@ const wallet = (state = INITIAL_STATE, action) => {
   if (action.type === KEY_OBJE_BUT_NOT_USDT) {
     return {
       ...state,
-      currencies: action.payload,
+      currencies: action.data,
     };
   }
   return state;

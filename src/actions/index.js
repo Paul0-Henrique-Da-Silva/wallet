@@ -10,9 +10,9 @@ export function emailAction(email) {
   };
 }
 
-export function valueCurriesButNotUSDT(currienciesTypes) {
+export function valueCurriesButNotUSDT(data) {
   return {
     type: KEY_OBJE_BUT_NOT_USDT,
-    curriencies: currienciesTypes,
+    data,
   };
 }
