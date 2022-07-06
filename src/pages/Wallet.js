@@ -14,6 +14,7 @@ class Wallet extends React.Component {
     };
   }
 
+  // handleChange
 inputChangeAll = ({ target }) => {
   const { name, value } = target;
   this.setState({
@@ -42,8 +43,35 @@ inputChangeAll = ({ target }) => {
           </h4>
           <h5 data-testid="header-currency-field">BRL</h5>
         </header>
+        {/* <------------------------------------------------------> */}
         <section>
-          <input name="value-input" data-testid="value-input" />
+          <input name="description" data-testid="description-input" />
+          <label htmlFor="tag-input">
+            categoria:
+            <select
+              id="tag-iput"
+              name="tag-input"
+              data-testid="tag-input"
+            >
+              <option value="Alimentação">Alimentação</option>
+              <option value="Lazer">Lazer</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Sáude">Sáude</option>
+            </select>
+          </label>
+          <label htmlFor="method">
+            Método de Pagamento:
+            <select
+              name="method"
+              id="method"
+              data-testid="method-input"
+            >
+              <option value="Dinheiro">Dinheiro</option>
+              <option value="Cartão de débito">Cartão de débito</option>
+              <option value="Cartão de crédito">Cartão de crédito</option>
+            </select>
+          </label>
           <label htmlFor="currency-input">
             Moeda:
             <select
@@ -57,21 +85,7 @@ inputChangeAll = ({ target }) => {
               ))}
             </select>
           </label>
-          {/* <input name="description" data-testid="description-input" /> */}
-          {/* <label htmlFor="method">
-                Método de Pagamento:
-                <select
-                  name="method"
-                  id="method"
-                  data-testid="method-input"
-                > */}
-          {/* <option value="Dinheiro">Dinheiro</option>
-                  <option value="Cartão de débito">Cartão de débito</option>
-                  <option value="Cartão de crédito">Cartão de crédito</option> */}
-          {/* </select> */}
-          {/* </label> */}
-          {/* </select> */}
-          {/* </label> */}
+          <input name="value-input" data-testid="value-input" />
         </section>
       </>
     );
