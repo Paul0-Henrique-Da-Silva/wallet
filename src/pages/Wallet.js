@@ -57,7 +57,7 @@ inputChangeAll = ({ target }) => {
               <option value="Lazer">Lazer</option>
               <option value="Trabalho">Trabalho</option>
               <option value="Transporte">Transporte</option>
-              <option value="Sáude">Sáude</option>
+              <option value="Saúde">Saúde</option>
             </select>
           </label>
           <label htmlFor="method">
