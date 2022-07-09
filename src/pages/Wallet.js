@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import asyncawesomeapi from '../actions';
+import asyncawesomeapiNotDolar from '../actions';
 // import asyncawesomeaapi from '../api/awesomeapi';
 // import { valueCurriesButNotUSDT } from '../actions';
 
@@ -10,15 +10,20 @@ class Wallet extends React.Component {
     super();
 
     this.state = {
-      currency: 'USD',
+      expenseOject: {
+        currency: 'USD',
+      },
     };
   }
 
   // handleChange
 inputChangeAll = ({ target }) => {
-  const { name, value } = target;
+  const { expenseOject } = this.state;
   this.setState({
-    [name]: value,
+    expenseOject: {
+      ...expenseOject,
+      [target.name]: (target.value),
+    },
   });
 }
 
@@ -31,7 +36,7 @@ inputChangeAll = ({ target }) => {
 
   render() {
     const { email, currencies } = this.props;
-    const { currency } = this.state;
+    const { expenseOject: { currency } } = this.state;
     return (
       <>
         <header>
@@ -53,11 +58,11 @@ inputChangeAll = ({ target }) => {
               name="tag-input"
               data-testid="tag-input"
             >
-              <option value="Alimentação">Alimentação</option>
+              <option value="Alimentacao">Alimentação</option>
               <option value="Lazer">Lazer</option>
               <option value="Trabalho">Trabalho</option>
               <option value="Transporte">Transporte</option>
-              <option value="Saúde">Saúde</option>
+              <option value="Saude">Saúde</option>
             </select>
           </label>
           <label htmlFor="method">
@@ -68,8 +73,8 @@ inputChangeAll = ({ target }) => {
               data-testid="method-input"
             >
               <option value="Dinheiro">Dinheiro</option>
-              <option value="Cartão de débito">Cartão de débito</option>
-              <option value="Cartão de crédito">Cartão de crédito</option>
+              <option value="Cartao-de-debito">Cartão de débito</option>
+              <option value="Cartao-de-credito">Cartão de crédito</option>
             </select>
           </label>
           <label htmlFor="currency-input">
@@ -86,6 +91,11 @@ inputChangeAll = ({ target }) => {
             </select>
           </label>
           <input name="value-input" data-testid="value-input" />
+          <button
+            type="button"
+          >
+            Adicionar despesa
+          </button>
         </section>
       </>
     );
@@ -93,12 +103,13 @@ inputChangeAll = ({ target }) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  currenciesAPI: () => dispatch(asyncawesomeapi()),
+  currenciesAPI: () => dispatch(asyncawesomeapiNotDolar()), // type moeda do select requisto 4
+  // expensesAPI: () => dispatch(getNewCurrenceSomeApi()),
 });
 
 const mapStateToProps = (store) => ({
   email: store.user.email,
-  currencies: store.wallet.currencies,
+  currencies: store.wallet.currencies, // usdt/ btc...
 });
 
 Wallet.propTypes = {
