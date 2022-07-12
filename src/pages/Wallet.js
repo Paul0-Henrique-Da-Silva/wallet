@@ -172,7 +172,7 @@ inputChangeAll = ({ target }) => {
                         <td>{ expense.description }</td>
                         <td>{ expense.tag }</td>
                         <td>{ expense.method }</td>
-                        <td>{expense.value}</td>
+                        <td>{parseFloat(expense.value).toFixed(2)}</td>
                         <td>
                           {
                             expense.exchangeRates[expense.currency].name
@@ -182,8 +182,8 @@ inputChangeAll = ({ target }) => {
                           { Number(expense.exchangeRates[expense.currency].ask)
                             .toFixed(2) }
                         </td>
-                        { Number(expense.exchangeRates[expense.currency].ask).toFixed(2)
-                        * Number(expense.value)}
+                        { (Number(expense.exchangeRates[expense.currency].ask)
+                        * expense.value).toFixed(2)}
                         <td />
                         <td>Real</td>
                         <td>
