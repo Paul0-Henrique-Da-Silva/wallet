@@ -1,7 +1,7 @@
 // Coloque aqui suas actions
 export const ENDERECO_EMAIL = 'ENDERECO_EMAIL';
 export const KEY_OBJE_COINS = 'KEY_OBJE_COINS';
-export const EXPENSES_WALLET = 'EXPENSES_WALLET';
+export const WALLET_DETAILS = 'WALLET_DETAILS';
 
 export function emailAction(email) {
   return {
@@ -11,6 +11,7 @@ export function emailAction(email) {
   };
 }
 
+// d=action coin currebce ustd, btc..
 export function valueCurries(data) {
   return {
     type: KEY_OBJE_COINS,
@@ -18,19 +19,19 @@ export function valueCurries(data) {
   };
 }
 
-// export function valueCurriesExpences(expense) {
-//   return {
-//     type: EXPENSES_WALLET,
-//     expense: { ...expense },
-//   };
-// }
+export function valueCurriesExpences(data) {
+  return {
+    type: WALLET_DETAILS,
+    data,
+  };
+}
 
-export default function asyncawesomeapiNotDolar() {
+export function asyncawesomeApi() {
   return async (dispatch) => {
     const request = await fetch('https://economia.awesomeapi.com.br/json/all');
     const response = await request.json();
-    const KeyObjeButNotUSDT = Object.keys(response)
-      .filter((currencies) => currencies !== 'USDT');
+    delete response.USDT;
+    const KeyObjeButNotUSDT = Object.keys(response);
     dispatch(valueCurries(KeyObjeButNotUSDT));
   };
 }

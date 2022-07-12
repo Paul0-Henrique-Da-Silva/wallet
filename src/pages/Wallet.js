@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import asyncawesomeapiNotDolar from '../actions';
-// import asyncawesomeaapi from '../api/awesomeapi';
-// import { valueCurriesButNotUSDT } from '../actions';
+import { asyncawesomeApi, valueCurriesExpences } from '../actions';
+import apiFecth from '../api/apiFecth';
 
 class Wallet extends React.Component {
   constructor() {
@@ -11,12 +10,47 @@ class Wallet extends React.Component {
 
     this.state = {
       expenseOject: {
+        value: 0,
         currency: 'USD',
+        description: '',
+        tag: 'Alimentação',
+        method: 'Dinheiro',
       },
     };
   }
 
-  // handleChange
+resetState = () => {
+  this.setState({
+    expenseOject: {
+      value: 0,
+      // currency: 'USD',
+      description: '',
+      // tag: 'Alimentação',
+      // method: 'Dinheiro',
+    },
+  });
+};
+
+saveStateReactOnRedux = () => {
+  const { expenseOject } = this.state;
+  const { expensesDetails } = this.props;
+  expensesDetails(expenseOject);
+  this.resetState();
+};
+
+saveStateAndCallOtherFunc = async () => {
+  const { expenseOject } = this.state;
+  const { expenses } = this.props;
+  this.setState({
+    expenseOject: {
+      ...expenseOject,
+      id: expenses.length,
+      exchangeRates: await apiFecth(),
+    },
+  }, this.saveStateReactOnRedux);
+}
+
+// handleChange
 inputChangeAll = ({ target }) => {
   const { expenseOject } = this.state;
   this.setState({
@@ -30,59 +64,68 @@ inputChangeAll = ({ target }) => {
   componentDidMount = async () => {
     const { currenciesAPI } = this.props;
     currenciesAPI();
-    // const { dispatch } = this.props;
-    // dispatch(valueCurriesButNotUSDT(asyncawesomeaapi()));
   };
 
   render() {
-    const { email, currencies } = this.props;
-    const { expenseOject: { currency } } = this.state;
+    const { email, currencies, expenses } = this.props;
+    const { expenseOject: { currency, description, value, method, tag } } = this.state;
     return (
       <>
         <header>
           <h2>Wallet</h2>
           <h4 data-testid="email-field">{ email }</h4>
           <h4 data-testid="total-field">
-            total:
-            { 0 }
+            { expenses.reduce((acc, valueExpense) => acc
+            + Number(valueExpense.value)
+            * Number(valueExpense.exchangeRates[valueExpense.currency].ask), 0)
+              .toFixed(2)}
           </h4>
           <h5 data-testid="header-currency-field">BRL</h5>
         </header>
         {/* <------------------------------------------------------> */}
         <section>
-          <input name="description" data-testid="description-input" />
-          <label htmlFor="tag-input">
+          <input
+            value={ description }
+            name="description"
+            data-testid="description-input" // talvez colocar o tipo
+            onChange={ this.inputChangeAll }
+          />
+          <label htmlFor="tag">
             categoria:
             <select
-              id="tag-iput"
-              name="tag-input"
+              value={ tag }
+              id="tag"
+              name="tag"
               data-testid="tag-input"
+              onChange={ this.inputChangeAll }
             >
-              <option value="Alimentacao">Alimentação</option>
-              <option value="Lazer">Lazer</option>
-              <option value="Trabalho">Trabalho</option>
-              <option value="Transporte">Transporte</option>
-              <option value="Saude">Saúde</option>
+              <option>Alimentação</option>
+              <option>Lazer</option>
+              <option>Trabalho</option>
+              <option>Transporte</option>
+              <option>Saúde</option>
             </select>
           </label>
           <label htmlFor="method">
             Método de Pagamento:
             <select
+              value={ method }
               name="method"
               id="method"
               data-testid="method-input"
+              onChange={ this.inputChangeAll }
             >
-              <option value="Dinheiro">Dinheiro</option>
-              <option value="Cartao-de-debito">Cartão de débito</option>
-              <option value="Cartao-de-credito">Cartão de crédito</option>
+              <option>Dinheiro</option>
+              <option>Cartão de débito</option>
+              <option>Cartão de crédito</option>
             </select>
           </label>
-          <label htmlFor="currency-input">
-            Moeda:
+          <label htmlFor="currency">
+            Moeda :
             <select
-              id="currency-input"
-              name="currency-input"
               value={ currency }
+              id="currency"
+              name="currency"
               onChange={ this.inputChangeAll }
             >
               {currencies.map((currencie) => (
@@ -90,9 +133,15 @@ inputChangeAll = ({ target }) => {
               ))}
             </select>
           </label>
-          <input name="value-input" data-testid="value-input" />
+          <input
+            value={ value }
+            name="value"
+            data-testid="value-input"
+            onChange={ this.inputChangeAll }
+          />
           <button
             type="button"
+            onClick={ this.saveStateAndCallOtherFunc }
           >
             Adicionar despesa
           </button>
@@ -103,19 +152,22 @@ inputChangeAll = ({ target }) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  currenciesAPI: () => dispatch(asyncawesomeapiNotDolar()), // type moeda do select requisto 4
-  // expensesAPI: () => dispatch(getNewCurrenceSomeApi()),
+  currenciesAPI: () => dispatch(asyncawesomeApi()), // type moeda do select requisto 4
+  expensesDetails: (data) => dispatch(valueCurriesExpences(data)),
+
 });
 
 const mapStateToProps = (store) => ({
   email: store.user.email,
   currencies: store.wallet.currencies, // usdt/ btc...
+  expenses: store.wallet.expenses,
 });
 
 Wallet.propTypes = {
-  currenciesApI: PropTypes.func,
-  currencies: PropTypes.arrayOf(PropTypes.string),
   email: PropTypes.string,
+  currenciesAPI: PropTypes.func,
+  currencies: PropTypes.arrayOf(PropTypes.string),
+  expenses: PropTypes.arrayOf(PropTypes.shape()),
 }.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
