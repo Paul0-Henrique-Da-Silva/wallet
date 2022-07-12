@@ -5,28 +5,24 @@ import { asyncawesomeApi, valueCurriesExpences } from '../actions';
 import apiFecth from '../api/apiFecth';
 
 class Wallet extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      expenseOject: {
-        value: 0,
-        currency: 'USD',
-        description: '',
-        tag: 'Alimentação',
-        method: 'Dinheiro',
-      },
-    };
-  }
+state = {
+  expenseOject: {
+    value: 0,
+    currency: 'USD',
+    description: '',
+    tag: 'Alimentação',
+    method: 'Dinheiro',
+  },
+}
 
 resetState = () => {
   this.setState({
     expenseOject: {
       value: 0,
-      // currency: 'USD',
+      currency: 'USD',
       description: '',
-      // tag: 'Alimentação',
-      // method: 'Dinheiro',
+      tag: 'Lazer',
+      method: 'Dinheiro',
     },
   });
 };
@@ -66,6 +62,15 @@ inputChangeAll = ({ target }) => {
     currenciesAPI();
   };
 
+  sumAll = () => {
+    const { expenses } = this.props;
+    const sum = expenses.reduce((acc, valueExpense) => acc
+      + Number(valueExpense.value)
+      * Number(valueExpense.exchangeRates[valueExpense.currency].ask), 0)
+      .toFixed(2);
+    return sum;
+  }
+
   render() {
     const { email, currencies, expenses } = this.props;
     const { expenseOject: { currency, description, value, method, tag } } = this.state;
@@ -75,10 +80,7 @@ inputChangeAll = ({ target }) => {
           <h2>Wallet</h2>
           <h4 data-testid="email-field">{ email }</h4>
           <h4 data-testid="total-field">
-            { expenses.reduce((acc, valueExpense) => acc
-            + Number(valueExpense.value)
-            * Number(valueExpense.exchangeRates[valueExpense.currency].ask), 0)
-              .toFixed(2)}
+            { this.sumAll() }
           </h4>
           <h5 data-testid="header-currency-field">BRL</h5>
         </header>
@@ -146,6 +148,66 @@ inputChangeAll = ({ target }) => {
             Adicionar despesa
           </button>
         </section>
+        <table>
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Tag</th>
+              <th>Método de pagamento</th>
+              <th>Valor</th>
+              <th>Moeda</th>
+              <th>Câmbio utilizado</th>
+              <th>Valor convertido</th>
+              <th>Moeda de conversão</th>
+              <th>Editar/Excluir</th>
+            </tr>
+          </thead>
+          {(
+            expenses.length > 0
+              ? (
+                <tbody>
+                  {(
+                    expenses.map((expense) => (
+                      <tr key={ expense.id }>
+                        <td>{ expense.description }</td>
+                        <td>{ expense.tag }</td>
+                        <td>{ expense.method }</td>
+                        <td>{expense.value}</td>
+                        <td>
+                          {
+                            expense.exchangeRates[expense.currency].name
+                          }
+                        </td>
+                        <td>
+                          { Number(expense.exchangeRates[expense.currency].ask)
+                            .toFixed(2) }
+                        </td>
+                        { Number(expense.exchangeRates[expense.currency].ask).toFixed(2)
+                        * Number(expense.value)}
+                        <td />
+                        <td>Real</td>
+                        <td>
+                          <button
+                            type="button"
+                            data-testid="edit-btn"
+                          >
+                            Editar
+                          </button>
+                          <button
+                            type="button"
+                            data-testid="delete-btn"
+                          >
+                            Excluir
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              )
+              : <tbody />
+          )}
+        </table>
       </>
     );
   }
