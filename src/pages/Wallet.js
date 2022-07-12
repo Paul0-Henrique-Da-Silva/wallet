@@ -71,6 +71,13 @@ inputChangeAll = ({ target }) => {
     return sum;
   }
 
+  format = (value) => parseFloat(value).toFixed(2);
+
+  formatValue = (value, exchange) => {
+    const valor = parseFloat(value) * parseFloat(exchange);
+    return this.format(valor);
+  }
+
   render() {
     const { email, currencies, expenses } = this.props;
     const { expenseOject: { currency, description, value, method, tag } } = this.state;
@@ -175,15 +182,22 @@ inputChangeAll = ({ target }) => {
                         <td>{parseFloat(expense.value).toFixed(2)}</td>
                         <td>
                           {
-                            expense.exchangeRates[expense.currency].name
+                            (expense.exchangeRates[expense.currency].name).split('/', 1)
+                            // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/String/split
                           }
                         </td>
                         <td>
-                          { Number(expense.exchangeRates[expense.currency].ask)
-                            .toFixed(2) }
+                          {
+                            this.format(expense.exchangeRates[expense.currency].ask)
+                          }
                         </td>
-                        { (Number(expense.exchangeRates[expense.currency].ask)
-                        * expense.value).toFixed(2)}
+                        <td>
+                          {
+                            this.formatValue(expense.value,
+                              expense.exchangeRates[expense.currency].ask)
+                          }
+                        </td>
+
                         <td />
                         <td>Real</td>
                         <td>
