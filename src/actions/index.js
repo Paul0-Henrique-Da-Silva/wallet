@@ -2,6 +2,7 @@
 export const ENDERECO_EMAIL = 'ENDERECO_EMAIL';
 export const KEY_OBJE_COINS = 'KEY_OBJE_COINS';
 export const WALLET_DETAILS = 'WALLET_DETAILS';
+export const WALLET_DELETE = 'WAllET_DELETE';
 
 export function emailAction(email) {
   return {
@@ -23,6 +24,14 @@ export function valueCurriesExpences(data) {
   return {
     type: WALLET_DETAILS,
     data,
+  };
+}
+
+export function newArrayExpenses(data, evento) {
+  const newExpense = data.filter((expense) => expense.id !== Number(evento.target.id));
+  return {
+    type: WALLET_DELETE,
+    newExpense,
   };
 }
 

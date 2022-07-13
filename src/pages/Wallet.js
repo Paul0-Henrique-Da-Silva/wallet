@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { asyncawesomeApi, valueCurriesExpences } from '../actions';
+import { asyncawesomeApi, valueCurriesExpences, newArrayExpenses } from '../actions';
 import apiFecth from '../api/apiFecth';
 
 class Wallet extends React.Component {
 state = {
-  expenseOject: {
-    value: 0,
+  expenseOject: { value: 0,
     currency: 'USD',
     description: '',
     tag: 'Alimentação',
@@ -17,8 +16,7 @@ state = {
 
 resetState = () => {
   this.setState({
-    expenseOject: {
-      value: 0,
+    expenseOject: { value: 0,
       currency: 'USD',
       description: '',
       tag: 'Lazer',
@@ -76,6 +74,12 @@ inputChangeAll = ({ target }) => {
   formatValue = (value, exchange) => {
     const valor = parseFloat(value) * parseFloat(exchange);
     return this.format(valor);
+  }
+
+  deleteEvent = (evento) => {
+    const { expenses, newArray } = this.props;
+    newArray(expenses, evento);
+    this.sumAll();
   }
 
   render() {
@@ -187,9 +191,7 @@ inputChangeAll = ({ target }) => {
                           }
                         </td>
                         <td>
-                          {
-                            this.format(expense.exchangeRates[expense.currency].ask)
-                          }
+                          { this.format(expense.exchangeRates[expense.currency].ask) }
                         </td>
                         <td>
                           {
@@ -208,15 +210,16 @@ inputChangeAll = ({ target }) => {
                             Editar
                           </button>
                           <button
+                            id={ expense.id }
                             type="button"
                             data-testid="delete-btn"
+                            onClick={ (evento) => this.deleteEvent(evento) }
                           >
                             Excluir
                           </button>
                         </td>
                       </tr>
-                    ))
-                  )}
+                    )))}
                 </tbody>
               )
               : <tbody />
@@ -230,20 +233,17 @@ inputChangeAll = ({ target }) => {
 const mapDispatchToProps = (dispatch) => ({
   currenciesAPI: () => dispatch(asyncawesomeApi()), // type moeda do select requisto 4
   expensesDetails: (data) => dispatch(valueCurriesExpences(data)),
-
-});
+  newArray: (data, evento) => dispatch(newArrayExpenses(data, evento)) });
 
 const mapStateToProps = (store) => ({
   email: store.user.email,
   currencies: store.wallet.currencies, // usdt/ btc...
-  expenses: store.wallet.expenses,
-});
+  expenses: store.wallet.expenses });
 
 Wallet.propTypes = {
   email: PropTypes.string,
   currenciesAPI: PropTypes.func,
   currencies: PropTypes.arrayOf(PropTypes.string),
-  expenses: PropTypes.arrayOf(PropTypes.shape()),
-}.isRequired;
+  expenses: PropTypes.arrayOf(PropTypes.shape()) }.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
